@@ -451,3 +451,6 @@ body > main.wrap{padding-top:18px}
 .enrollbtn{display:inline-block;padding:16px 34px;border-radius:999px;background:linear-gradient(135deg,#e5484d,#f08a24);color:#fff!important;font-size:18px;font-weight:900;text-decoration:none;box-shadow:0 8px 22px rgba(229,72,77,.32);transition:transform .15s,box-shadow .15s}
 .enrollbtn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(229,72,77,.4)}
 .tabs{top:8px!important}
+/* iframe 안에서 화면 따라오기 */
+.chatfab.follow{position:absolute;bottom:auto;transition:top .18s ease-out}
+.chatwin.follow{position:absolute;bottom:auto;transition:top .18s ease-out}

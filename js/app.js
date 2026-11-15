@@ -777,3 +777,28 @@ document.addEventListener('DOMContentLoaded',()=>{
   initChat();
 });
 })();
+
+/* ---------- 홈페이지(iframe)에 넣었을 때 후안샘 봇이 화면을 따라오게 ----------
+   iframe 높이가 내용 전체 높이로 늘어나 있으면 position:fixed가 iframe 맨 아래에 붙어 버립니다.
+   IntersectionObserver로 '부모 화면에서 실제로 보이는 영역'을 계산해 버튼과 채팅창을 그 아래쪽에 둡니다. */
+(function(){
+  if(window.self===window.top || !('IntersectionObserver' in window)) return;
+  const STRIP=80; let strips=[], rects=new Map(), io=null, vis=null, raf=0;
+  const internalScroll=()=> document.documentElement.scrollHeight > window.innerHeight+40;
+  function place(){ raf=0; const fab=document.querySelector('.chatfab'), win=document.querySelector('.chatwin'); if(!fab) return;
+    if(internalScroll()||!vis){ fab.classList.remove('follow'); fab.style.top=''; if(win){ win.classList.remove('follow'); win.style.top=''; win.style.height=''; } return; }
+    fab.classList.add('follow'); const fh=fab.offsetHeight||56; const sy=window.scrollY||0;
+    const fabTop=Math.max(vis.top+10, vis.bottom-fh-22); fab.style.top=(fabTop+sy)+'px';
+    if(win){ win.classList.add('follow'); const avail=vis.bottom-vis.top-fh-50; const wh=Math.max(300, Math.min(600, avail)); win.style.height=wh+'px'; win.style.top=(Math.max(vis.top+10, fabTop-wh-12)+sy)+'px'; } }
+  const schedule=()=>{ if(!raf) raf=requestAnimationFrame(place); };
+  function recompute(){ let t=Infinity,b=-Infinity; rects.forEach(r=>{ if(r.height>0){ t=Math.min(t,r.top); b=Math.max(b,r.bottom); } }); vis=(b>t)?{top:t,bottom:b}:null; schedule(); }
+  function build(){ if(io) io.disconnect(); strips.forEach(s=>s.remove()); strips=[]; rects.clear();
+    const H=Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    let host=document.getElementById('followStrips'); if(!host){ host=document.createElement('div'); host.id='followStrips'; host.setAttribute('aria-hidden','true'); host.style.cssText='position:absolute;left:0;top:0;width:1px;height:0;pointer-events:none;visibility:hidden;z-index:-1'; document.body.appendChild(host); }
+    io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) rects.set(e.target,e.intersectionRect); else rects.delete(e.target); }); recompute(); },{threshold:[0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]});
+    for(let y=0;y<H;y+=STRIP){ const s=document.createElement('div'); s.style.cssText=`position:absolute;left:0;top:${y}px;width:1px;height:${Math.min(STRIP,H-y)}px`; host.appendChild(s); strips.push(s); io.observe(s); } }
+  let rt=0; const rebuild=()=>{ clearTimeout(rt); rt=setTimeout(build,250); };
+  window.addEventListener('load',build); setTimeout(build,600);
+  if('ResizeObserver' in window) new ResizeObserver(rebuild).observe(document.body); else window.addEventListener('resize',rebuild);
+  document.addEventListener('click',e=>{ if(e.target.closest('.chatfab,.chatwin')) setTimeout(place,0); });
+})();
