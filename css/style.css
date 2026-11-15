@@ -443,3 +443,11 @@ footer b{color:var(--ink)}
   body.print-wrong .chap-hero{padding:10px 0!important;background:none!important;color:#000!important}
   body.print-wrong .wcard{break-inside:avoid}
 }
+
+/* 샘플 수업: 수강신청 버튼 */
+body > main.wrap{padding-top:18px}
+.enroll{text-align:center;margin:28px 0 40px;padding:26px 18px;border-radius:20px;background:linear-gradient(135deg,#fff4f0,#fdecef);border:1.5px solid #f3c2c9}
+.enroll p{margin:0 0 14px;font-weight:700;color:var(--ink)}
+.enrollbtn{display:inline-block;padding:16px 34px;border-radius:999px;background:linear-gradient(135deg,#e5484d,#f08a24);color:#fff!important;font-size:18px;font-weight:900;text-decoration:none;box-shadow:0 8px 22px rgba(229,72,77,.32);transition:transform .15s,box-shadow .15s}
+.enrollbtn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(229,72,77,.4)}
+.tabs{top:8px!important}

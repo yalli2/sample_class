@@ -681,7 +681,7 @@ function renderChapter(CH){
   updWrongBadge();
   const nav=el('div','chapnav'); const prev=CHAPTERS[idx-1], next=CHAPTERS[idx+1];
   nav.innerHTML=(prev?`<a href="${window.FULL_SITE||''}ch${prev.id}.html"><small>◀ 이전</small><b>${prev.icon} ${prev.title}</b></a>`:'<span></span>')+(next?`<a class="next" href="${window.FULL_SITE||''}ch${next.id}.html"><small>다음 ▶</small><b>${next.icon} ${next.title}</b></a>`:'<a class="next" href="index.html"><small>처음으로</small><b>🏠 전체 목차</b></a>');
-  if(!window.STANDALONE) root.appendChild(nav); else { const full=el('div','chapnav'); full.innerHTML=`<a class="next" href="${window.FULL_SITE}index.html" target="_blank" rel="noopener"><small>전체 강의 보기 ▶</small><b>📚 기초 스페인어 문법 (서론 + 30장)</b></a>`; root.appendChild(full); }
+  if(!window.STANDALONE) root.appendChild(nav); else { const cta=el('div','enroll'); cta.innerHTML=`<p>이 수업이 마음에 드셨나요? 서론부터 30장까지 전체 과정을 후안샘과 함께 공부해 보세요.</p><a class="enrollbtn" href="https://www.dainedu.net/%EC%88%98%EA%B0%95%EC%8B%A0%EC%B2%AD" target="_top">📝 수강신청하러 가기 ▶</a>`; root.appendChild(cta); }
   const p=loadP(); const c=p[CH.id]||{done:[],best:0,visits:0}; c.visits=(c.visits||0)+1; c.total=CH.exercises.length; p[CH.id]=c; saveP(p); updateHeaderProgress();
   // 학습 탭 자동 완료 체크(연습문제 없는 장)
   if(!CH.exercises.length){ const pp=loadP(); pp[CH.id].done=[0]; pp[CH.id].total=1; saveP(pp); }
